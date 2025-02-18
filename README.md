@@ -85,7 +85,86 @@ Once Repository is created, we can now click on View push commands and execute c
 
 <img width="1150" alt="Screenshot 2025-02-18 at 11 07 29 AM" src="https://github.com/user-attachments/assets/48a6255b-0d29-4d2c-9481-38d8dbaee034" />
 
+## Step 3 : Lets now create a custom VPC, NAT gateway and modify the route tables as shown in the below screenshot :
 
+<img width="1548" alt="Screenshot 2025-02-18 at 11 33 56 AM" src="https://github.com/user-attachments/assets/0413af26-c04b-4167-a2f0-4634d49b4ed6" />
+
+<img width="1763" alt="Screenshot 2025-02-15 at 5 51 19 PM" src="https://github.com/user-attachments/assets/8cd75129-0966-49cd-9410-922d86f50dcb" />
+
+<img width="1731" alt="Screenshot 2025-02-15 at 5 53 04 PM" src="https://github.com/user-attachments/assets/e73fc855-8554-4007-9572-33d29e9af931" />
+
+We need to add custom tags to our public and private subnets so that our EKS cluster identifies it as shown in the below screenshot :
+
+Public subnet
+
+<img width="1283" alt="Screenshot 2025-02-15 at 6 20 55 PM" src="https://github.com/user-attachments/assets/ef503816-efbf-4264-ac33-48e9de97233b" />
+
+Private Subnet
+
+<img width="1715" alt="Screenshot 2025-02-15 at 6 26 25 PM" src="https://github.com/user-attachments/assets/16e5491e-151b-4a9e-b696-09ad29f8ffef" />
+
+## Step 3 : Create EKS Cluster 
+
+In AWS console, Navigate to EKS and Click Create Cluster. 
+
+Select Create Recommended Role for Cluster IAM role and Node IAM role and for VPC select the custom VPC which we created in Step 2 :
+
+<img width="1665" alt="Screenshot 2025-02-18 at 11 37 11 AM" src="https://github.com/user-attachments/assets/6ea3eb90-002a-4d4d-b59f-385c4b9e2281" />
+
+The cluster will take 5-10 mins to get ready .
+
+Once the cluster is ready we can go to cloud shell and enter the below command :
+
+aws eks update-kubeconfig --region <region-name> --name <cluster-name>
+Make sure eksctl and kubectl are installed on cloud shell.
+
+## Step 4 : Deploy the yaml files :
+
+First lets create a namespace for our deployment :
+
+kubectl create namespace game-2048
+
+### In the code we have given :
+springboot-deployement1.yaml : Deployment file for Microservice 1
+department-deployment.yaml : Deployment file for Microservice 2
+service1.yaml : Creates a nodeport service for Microservice 1 and connects to container pod at target port 8080
+service.department.yaml : Creates a nodeport service for Microservice 2 and connectes to container pod at target port 8080
+IngressClassParam-sample.yaml : Creates a Ingress Class param of type alb and scheme as internet facing.
+IngressClassSample.yaml : Creates a ingress class with the same name as alb
+IngressResourceSample1.yaml : Creates a ingress Application load balancer and also performs path based routing based on /department/* and /*
+
+Deploy all these files using the below command :
+
+Kubectl apply -f "filename"
+
+We can check the status of the pods using the below command :
+
+kubectl get pods -n game-2048
+
+We can check the status of the service using the below command :
+
+kubectl get svc -n game-2048
+
+We can check the status of ingress using the below command :
+
+kubectl get ingress -n game-2048
+
+<img width="1303" alt="Screenshot 2025-02-17 at 10 49 54 AM" src="https://github.com/user-attachments/assets/a1d5324e-6426-4b4d-b561-77c1cd56c658" />
+
+Once the ALB is provisioned , we can go and check the rules . It will show as in the below screenshot :
+
+<img width="1522" alt="Screenshot 2025-02-18 at 11 50 26 AM" src="https://github.com/user-attachments/assets/0d85b661-c44c-44db-af6e-ef95626dda59" />
+
+Once, it is ready, we can check both the microservice using the same ALB with different paths as shown in the below screenshot :
+
+<img width="1411" alt="Screenshot 2025-02-17 at 10 50 20 AM" src="https://github.com/user-attachments/assets/b823bd71-b83f-4a4c-82a8-0aa13c391244" />
+
+<img width="1634" alt="Screenshot 2025-02-17 at 10 52 37 AM" src="https://github.com/user-attachments/assets/011d6823-cec7-4c36-8889-a2a406f195f5" />
+
+### Congratulations , we have now successfully deployed microservices in EKS Auto mode with single AWS ALB as ingress and path based routing.
+
+
+                
 
 
 
