@@ -74,7 +74,20 @@ Now, do the maven build using mvn clean install. This will build docker image.
 
 ## Step 2 : Store the image in Amazon ECR :
 
-Navigate to AWS console and 
+Navigate to AWS console and go to Amazon ECR and click Create Repository and enter the name of the repository as Department and Click Create.
+
+<img width="1742" alt="Screenshot 2025-02-18 at 11 06 36 AM" src="https://github.com/user-attachments/assets/bde5a41b-7554-49fb-9f74-fdcd0baec6cc" />
+
+Once Repository is created, we can now click on View push commands and execute commands for our operating system.
+
+<img width="1548" alt="Screenshot 2025-02-18 at 11 08 11 AM" src="https://github.com/user-attachments/assets/b5231486-1deb-4fe5-a805-a8f6cc0211ea" />
+
+
+<img width="1150" alt="Screenshot 2025-02-18 at 11 07 29 AM" src="https://github.com/user-attachments/assets/48a6255b-0d29-4d2c-9481-38d8dbaee034" />
+
+
+
+
 
 
 
