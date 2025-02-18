@@ -10,7 +10,7 @@ spec:
   rules:
     - http:
         paths:
-          - path: /department
+          - path: /department/*
             pathType: ImplementationSpecific
             backend:
               service:
